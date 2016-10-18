@@ -17,75 +17,87 @@ import java.util.*;
  *
  */
 public class calculate {
-	
-	public static void main(String[] args) {
+	public final static int number=10;
+	public static void main(String[]  args) {
 		// TODO Auto-generated method stub
 		Scanner in = new Scanner(System.in);
 		String str_origin = "", com, der, test = "";    //接收原始的输入
 		String[] str_split_plus;                        //用+分割
-		String[][] str_split_multi = new String[10][10];//用*分割
+		String[][] str_split_multi = new String[number][number]; //用*分割
 		calculate A = new calculate();
-		int i=0;
+		int i = 0;
 		
 		/*接受到end时，结束程序*/
 		System.out.println("输入end结束程序");
 		while (!test.equals("end")) {
 			test = in.nextLine();
-			if (test.equals(""))
+			if (test.equals("")) {
 				System.out.println("Error, no variable");
-			else if (test.charAt(0) == '+' || test.charAt(0) == '-' || test.charAt(0) == '*'|| test.charAt(0) == '/') {
-				System.out.println("Error, no variable");
-				continue;
-			}else if (test.charAt(0) != '!' && !test.equals("end")) {
-				for( i=0;i<test.length();i++){
-					if(test.charAt(i)=='-'||test.charAt(i)=='/'||test.charAt(i)=='^'){
-						System.out.println("Error, no variable");
-						break;
-					}
-				}
-				if(i == test.length()){
-				str_origin = test;
-				str_origin = str_origin.replaceAll(" ", "");   //去除空格
-				str_origin = str_origin.replaceAll("	", "");//去除Tab
-				System.out.println(str_origin);                //第一个要求，输出接收的表达式
-				continue;
-				}
 			} else if (test.charAt(0) == '!') {
 				if (test.subSequence(1, 4).equals("d/d")) {
 					str_split_plus = str_origin.split("\\+");       //用+分割
 					str_split_multi = A.expression(str_split_plus); //用*分割
 					der = test;            
-					A.derivative(der, str_split_plus, str_split_multi);//求导
+					A.derivative(der, str_split_plus, str_split_multi); //求导
 					continue;
 				} else if (test.subSequence(1, 9).equals("simplify")) {
 					com = test;
 					A.simplify(com, str_origin);
 					continue;
-				} 
+				} else {
+					System.out.println("Error, no variable");
+				}
+					
 
-			} else
+			} else if (((test.charAt(0) <= '9' && test.charAt(0) >= '1') 
+					|| (test.charAt(0) <= 'z' && test.charAt(0) >= 'a') 
+					|| (test.charAt(0) <= 'Z' && test.charAt(0) >= 'A') 
+					|| test.charAt(0) == ' ' ) && !test.equals("end")) {
+				for( i=0;i<test.length();i++){
+					if(!((test.charAt(i) <= '9' && test.charAt(i) >= '0') 
+							|| (test.charAt(i) <= 'z' && test.charAt(i) >= 'a') 
+							|| (test.charAt(i) <= 'Z' && test.charAt(i) >= 'A') 
+							|| test.charAt(i) == ' ')) {
+						System.out.println("Error, no variable");
+						break;
+					}
+				}
+				if (i == test.length()) {
+				str_origin = test;
+				str_origin = str_origin.replaceAll(" ", "");   //去除空格
+				str_origin = str_origin.replaceAll("	", ""); //去除Tab
+				System.out.println(str_origin);                //第一个要求，输出接收的表达式
 				continue;
+				}
+			} else {
+				System.out.println("Error, no variable");
+				continue;
+			}
+				
+				
 
 		}
 		in.close();
 
 	}
 	
-	/*******************赋值函数*******************/
-	public void simplify(String com, String str) {
+	/*******************赋值函数.*******************/
+	public void simplify(String  com, String str) {/*参数：com 为赋值命令，str为原表达式*/
 
-		String[] cc, sumfen;
+		String[] command_split, sumfen;
 		int i, j, k, mul, sum = 0, l;
-		String[] ee = new String[10];
-		String[][] summ = new String[10][10];
+		String[] ee = new String[number];
+		String[][] summ = new String[number][number];
 		try {
-			cc = com.split(" ");
-			if (cc.length == 1)
+			command_split = com.split(" ");
+			if (command_split.length == 1) {
 				System.out.println(str);
-			else {
+			} else {
 				ee[0] = str;
-				for (i = 1; i < cc.length; i++)
-					ee[i] = ee[i - 1].replace(cc[i].charAt(0), cc[i].charAt(cc[i].length() - 1));
+				for (i = 1; i < command_split.length; i++) {
+					ee[i] = ee[i - 1].replace(command_split[i].charAt(0), 
+							command_split[i].charAt(command_split[i].length() - 1));
+				}
 				sumfen = ee[i - 1].split("\\+");
 				summ = expression(sumfen);
 				for (k = 0; k < sumfen.length; k++) {
@@ -103,14 +115,17 @@ public class calculate {
 
 					}
 					if (l == summ[k].length) {
-						for (j = 0; j < summ[k].length; j++)
+						for (j = 0; j < summ[k].length; j++){
 							mul = mul * Integer.valueOf(summ[k][j]);
-					} else
+						}
+					} else {
 						break;
+					}
 					sum = sum + mul;
 				}
-				if (k == sumfen.length)
+				if (k == sumfen.length){
 					System.out.println(sum);
+				}
 			}
 		} catch (Exception e) {
 			System.out.println("Error, no variable");
@@ -132,8 +147,9 @@ public class calculate {
 			}
 			if (num == 0) {
 				k++;
-				if (k == str_split_plus.length)
+				if (k == str_split_plus.length) {
 					System.out.println("Error, no variable");
+				}
 				continue;
 			} else {
 				if (num == 1) {
@@ -149,8 +165,9 @@ public class calculate {
 					// System.out.print(j+" ");
 				}
 			}
-			if (i < str_split_plus.length - 1)
+			if (i < str_split_plus.length - 1) {
 				System.out.print("+");
+			}
 			num = 0;
 		}
 		System.out.println("\n");
@@ -159,7 +176,7 @@ public class calculate {
 
 	/*******************将用+分割过的字符串再用*进行分割*******************/
 	private String[][] expression(String[] str_split_plus) {
-		String[][] str_split_multi = new String[10][10];
+		String[][] str_split_multi = new String[number][number];
 		int i, k;
 		for (i = 0; i < str_split_plus.length; i++) {
 			k = i;
