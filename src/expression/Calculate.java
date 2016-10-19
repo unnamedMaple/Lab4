@@ -20,7 +20,7 @@ public class Calculate {
 	public final static int NUMBER=10;//…Í«Îø’º‰¥Û–°
 	public static void main(String[]  args) {
 		// TODO Auto-generated method stub
-		Scanner in = new Scanner(System.in);
+		Scanner in = new Scanner(System.in,"utf-8");
 		String str_origin = "";
 		String com;
 		String der;
