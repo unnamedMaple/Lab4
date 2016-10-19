@@ -1,4 +1,4 @@
-package Expression;
+package expression;
 
 import java.util.*;
 
@@ -17,11 +17,14 @@ import java.util.*;
  *
  */
 public class Calculate {
-	public final static int NUMBER=10;
+	public final static int NUMBER=10;//申请空间大小
 	public static void main(String[]  args) {
 		// TODO Auto-generated method stub
 		Scanner in = new Scanner(System.in);
-		String str_origin = "", com, der, test = "";    //接收原始的输入
+		String str_origin = "";
+		String com;
+		String der;
+		String test = "";    //接收原始的输入
 		String[] str_split_plus;                        //用+分割
 		String[][] str_split_multi = new String[NUMBER][NUMBER]; //用*分割
 		Calculate myCalculate = new Calculate();
@@ -85,7 +88,12 @@ public class Calculate {
 	public void simplify(String  com, String str) {/*参数：com 为赋值命令，str为原表达式*/
 
 		String[] command_split, sumfen;
-		int i, j, k, mul, sum = 0, l;
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		int mul = 1;
+		int sum = 0;
+		int l = 0;
 		String[] ee = new String[NUMBER];
 		String[][] summ = new String[NUMBER][NUMBER];
 		try {
@@ -136,9 +144,11 @@ public class Calculate {
 	/*******************求导函数*******************/
 	public void derivative(final String der, final String[] str_split_plus, final String[][]  str_split_multi) {
 		char x;
-		int plusIndex, charIndex, len, num = 0;
+		int plusIndex = 0;
+		int charIndex = 0;
+		int len = 0;
+		int num = 0;
 		x = der.charAt(der.length() - 1);
-		len = 0;
 		for (plusIndex = 0; plusIndex < str_split_plus.length; plusIndex++) {
 			for (charIndex = 0; charIndex < str_split_plus[plusIndex].length(); charIndex++) {
 				if (str_split_plus[plusIndex].charAt(charIndex) == x) {
@@ -177,7 +187,8 @@ public class Calculate {
 	/*******************将用+分割过的字符串再用*进行分割*******************/
 	private String[][] expression(String[] str_split_plus) {
 		String[][] str_split_multi = new String[NUMBER][NUMBER];
-		int i, k;
+		int i = 0;
+		int k = 0;
 		for (i = 0; i < str_split_plus.length; i++) {
 			k = i;
 			str_split_multi[k] = str_split_plus[i].split("\\*");
