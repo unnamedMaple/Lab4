@@ -16,33 +16,33 @@ import java.util.*;
  * All right reserved.
  *
  */
-public class calculate {
-	public final static int number=10;
+public class Calculate {
+	public final static int NUMBER=10;
 	public static void main(String[]  args) {
 		// TODO Auto-generated method stub
 		Scanner in = new Scanner(System.in);
 		String str_origin = "", com, der, test = "";    //接收原始的输入
 		String[] str_split_plus;                        //用+分割
-		String[][] str_split_multi = new String[number][number]; //用*分割
-		calculate A = new calculate();
+		String[][] str_split_multi = new String[NUMBER][NUMBER]; //用*分割
+		Calculate myCalculate = new Calculate();
 		int i = 0;
 		
 		/*接受到end时，结束程序*/
 		System.out.println("输入end结束程序");
-		while (!test.equals("end")) {
+		while (!"end".equals(test)) {
 			test = in.nextLine();
 			if (test.equals("")) {
 				System.out.println("Error, no variable");
 			} else if (test.charAt(0) == '!') {
 				if (test.subSequence(1, 4).equals("d/d")) {
 					str_split_plus = str_origin.split("\\+");       //用+分割
-					str_split_multi = A.expression(str_split_plus); //用*分割
+					str_split_multi = myCalculate.expression(str_split_plus); //用*分割
 					der = test;            
-					A.derivative(der, str_split_plus, str_split_multi); //求导
+					myCalculate.derivative(der, str_split_plus, str_split_multi); //求导
 					continue;
 				} else if (test.subSequence(1, 9).equals("simplify")) {
 					com = test;
-					A.simplify(com, str_origin);
+					myCalculate.simplify(com, str_origin);
 					continue;
 				} else {
 					System.out.println("Error, no variable");
@@ -52,7 +52,7 @@ public class calculate {
 			} else if (((test.charAt(0) <= '9' && test.charAt(0) >= '1') 
 					|| (test.charAt(0) <= 'z' && test.charAt(0) >= 'a') 
 					|| (test.charAt(0) <= 'Z' && test.charAt(0) >= 'A') 
-					|| test.charAt(0) == ' ' ) && !test.equals("end")) {
+					|| test.charAt(0) == ' ' ) && !"end".equals(test)) {
 				for( i=0;i<test.length();i++){
 					if(!((test.charAt(i) <= '9' && test.charAt(i) >= '0') 
 							|| (test.charAt(i) <= 'z' && test.charAt(i) >= 'a') 
@@ -86,8 +86,8 @@ public class calculate {
 
 		String[] command_split, sumfen;
 		int i, j, k, mul, sum = 0, l;
-		String[] ee = new String[number];
-		String[][] summ = new String[number][number];
+		String[] ee = new String[NUMBER];
+		String[][] summ = new String[NUMBER][NUMBER];
 		try {
 			command_split = com.split(" ");
 			if (command_split.length == 1) {
@@ -134,20 +134,20 @@ public class calculate {
 	}
 
 	/*******************求导函数*******************/
-	public void derivative(String der, String[] str_split_plus, String[][] str_split_multi) {
+	public void derivative(final String der, final String[] str_split_plus, final String[][]  str_split_multi) {
 		char x;
-		int i, j, k, num = 0;
+		int plusIndex, charIndex, len, num = 0;
 		x = der.charAt(der.length() - 1);
-		k = 0;
-		for (i = 0; i < str_split_plus.length; i++) {
-			for (j = 0; j < str_split_plus[i].length(); j++) {
-				if (str_split_plus[i].charAt(j) == x) {
+		len = 0;
+		for (plusIndex = 0; plusIndex < str_split_plus.length; plusIndex++) {
+			for (charIndex = 0; charIndex < str_split_plus[plusIndex].length(); charIndex++) {
+				if (str_split_plus[plusIndex].charAt(charIndex) == x) {
 					num++;
 				}
 			}
 			if (num == 0) {
-				k++;
-				if (k == str_split_plus.length) {
+				len++;
+				if (len == str_split_plus.length) {
 					System.out.println("Error, no variable");
 				}
 				continue;
@@ -157,15 +157,15 @@ public class calculate {
 				} else {
 					System.out.print(x + "*" + num);
 				}
-				for (j = 0; j < str_split_multi[i].length; j++) {
-					if (str_split_multi[i][j].charAt(0) != x) {
-						System.out.print("*" + str_split_multi[i][j].charAt(0));
+				for (charIndex = 0; charIndex < str_split_multi[plusIndex].length; charIndex++) {
+					if (str_split_multi[plusIndex][charIndex].charAt(0) != x) {
+						System.out.print("*" + str_split_multi[plusIndex][charIndex].charAt(0));
 
 					}
 					// System.out.print(j+" ");
 				}
 			}
-			if (i < str_split_plus.length - 1) {
+			if (plusIndex < str_split_plus.length - 1) {
 				System.out.print("+");
 			}
 			num = 0;
@@ -176,7 +176,7 @@ public class calculate {
 
 	/*******************将用+分割过的字符串再用*进行分割*******************/
 	private String[][] expression(String[] str_split_plus) {
-		String[][] str_split_multi = new String[number][number];
+		String[][] str_split_multi = new String[NUMBER][NUMBER];
 		int i, k;
 		for (i = 0; i < str_split_plus.length; i++) {
 			k = i;
