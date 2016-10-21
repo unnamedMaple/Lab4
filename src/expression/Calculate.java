@@ -19,7 +19,6 @@ import java.util.*;
 public class Calculate {
 	public final static int NUMBER=10;//申请空间大小
 	public static void main(String[]  args) {
-		// TODO Auto-generated method stub
 		Scanner in = new Scanner(System.in,"utf-8");
 		String str_origin = "";
 		String com;
@@ -36,7 +35,9 @@ public class Calculate {
 			test = in.nextLine();
 			if (test.equals("")) {
 				System.out.println("Error, no variable");
-			} else if (test.charAt(0) == '!') {
+			} else if("end".equals(test)){
+				break;
+			}else if (test.charAt(0) == '!') {
 				if (test.subSequence(1, 4).equals("d/d")) {
 					str_split_plus = str_origin.split("\\+");       //用+分割
 					str_split_multi = myCalculate.expression(str_split_plus); //用*分割
@@ -55,12 +56,14 @@ public class Calculate {
 			} else if (((test.charAt(0) <= '9' && test.charAt(0) >= '1') 
 					|| (test.charAt(0) <= 'z' && test.charAt(0) >= 'a') 
 					|| (test.charAt(0) <= 'Z' && test.charAt(0) >= 'A') 
-					|| test.charAt(0) == ' ' ) && !"end".equals(test)) {
+					|| test.charAt(0) == ' ' )) {
 				for( i=0;i<test.length();i++){
 					if(!((test.charAt(i) <= '9' && test.charAt(i) >= '0') 
 							|| (test.charAt(i) <= 'z' && test.charAt(i) >= 'a') 
 							|| (test.charAt(i) <= 'Z' && test.charAt(i) >= 'A') 
-							|| test.charAt(i) == ' ')) {
+							|| test.charAt(i) == ' ' 
+							|| test.charAt(i) == '*'
+							|| test.charAt(i) == '+')) {
 						System.out.println("Error, no variable");
 						break;
 					}
@@ -124,7 +127,7 @@ public class Calculate {
 					}
 					if (l == summ[k].length) {
 						for (j = 0; j < summ[k].length; j++){
-							mul = mul * Integer.valueOf(summ[k][j]);
+							mul = mul * Integer.valueOf(summ[k][j]).intValue();
 						}
 					} else {
 						break;
